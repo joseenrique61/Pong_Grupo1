@@ -1,29 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public float speed;
-
-    private Rigidbody2D rb;
-    private Vector2 movement;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        rb = GetComponent<Rigidbody2D>();        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        movement.x = Input.GetAxisRaw("Horizontal"); 
-        movement.y = Input.GetAxisRaw("Vertical"); 
-    }
+	public float speed;
+	public Transform Top;
+	public Transform Bottom;
 
 	private void FixedUpdate()
 	{
-		rb.MovePosition(rb.position + speed * Time.fixedDeltaTime * movement);
+		float newY = transform.position.y + Input.GetAxisRaw("Vertical") * speed * Time.fixedDeltaTime;
+		transform.position = new Vector2(transform.position.x, Mathf.Clamp(newY, Bottom.position.y + (transform.localScale.y / 2), Top.position.y - (transform.localScale.y / 2)));
 	}
 }

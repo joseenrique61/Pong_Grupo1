@@ -1,9 +1,14 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class BallMovement : MonoBehaviour
 {
 	public float speed;
 	public float speedIncrement;
+
+	public Transform AI;
+
+	public UnityEvent<float> DirectionUpdated;
 
 	private Rigidbody2D rb;
 	private int horizontalDirection;
@@ -14,11 +19,18 @@ public class BallMovement : MonoBehaviour
 	{
 		rb = GetComponent<Rigidbody2D>();
 
+		SetStartDirection();
+
+		DirectionUpdated.Invoke(CalculateYDestination());
+	}
+
+	private void SetStartDirection()
+	{
 		System.Random random = new();
-		int randDir = random.Next(1, 2);
+		int randDir = random.Next(2);
 		horizontalDirection = randDir == 1 ? 1 : -1;
 
-		randDir = random.Next(1, 2);
+		randDir = random.Next(2);
 		verticalDirection = randDir == 1 ? 1 : -1;
 	}
 
@@ -44,5 +56,12 @@ public class BallMovement : MonoBehaviour
 			horizontalDirection *= -1;
 			speed += speedIncrement;
 		}
+
+		DirectionUpdated.Invoke(CalculateYDestination());
+	}
+
+	private float CalculateYDestination()
+	{
+		return verticalDirection * (-1 * AI.transform.position.x - Mathf.Abs(transform.position.x)) + transform.position.y;
 	}
 }
