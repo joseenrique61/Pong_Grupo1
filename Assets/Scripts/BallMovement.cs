@@ -7,6 +7,8 @@ public class BallMovement : MonoBehaviour
 	public float speedIncrement;
 
 	public Transform AI;
+	public Score score;
+	public int actualScore;
 
 	public UnityEvent<float> DirectionUpdated;
 
@@ -20,6 +22,8 @@ public class BallMovement : MonoBehaviour
 		rb = GetComponent<Rigidbody2D>();
 
 		SetStartDirection();
+
+		actualScore = 0;
 
 		DirectionUpdated.Invoke(CalculateYDestination());
 	}
@@ -55,6 +59,13 @@ public class BallMovement : MonoBehaviour
 		{
 			horizontalDirection *= -1;
 			speed += speedIncrement;
+		}
+
+		if (collision.collider.transform.CompareTag("Player"))
+		{
+			actualScore++;
+			score.AddPoints(actualScore);
+			Debug.Log(actualScore);
 		}
 
 		DirectionUpdated.Invoke(CalculateYDestination());

@@ -5,6 +5,7 @@ public class AIMove : MonoBehaviour
 	public float speed;
 	public Transform Top;
 	public Transform Bottom;
+	
 
 	private float y;
 
@@ -27,4 +28,6 @@ public class AIMove : MonoBehaviour
 	{
 		this.y = y;
 	}
+
+
 }
